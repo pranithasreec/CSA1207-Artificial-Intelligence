@@ -1,0 +1,46 @@
+class VacuumCleaner:
+    def __init__(self, position, status):
+        self.position = position  # Current position of the vacuum cleaner (0 for left, 1 for right)
+        self.status = status  # Status of the room (0 for clean, 1 for dirty)
+
+    def move_left(self):
+        self.position = 0
+        print("Moved left")
+
+    def move_right(self):
+        self.position = 1
+        print("Moved right")
+
+    def clean(self):
+        self.status = 0
+        print("Cleaned the current spot")
+
+def main():
+    # Initialize a vacuum cleaner at position 0 (left) with a dirty spot
+    vacuum = VacuumCleaner(0, 1)
+
+    # Run the vacuum cleaner program
+    while True:
+        print("Current position:", "Left" if vacuum.position == 0 else "Right")
+        print("Current status:", "Dirty" if vacuum.status == 1 else "Clean")
+        print("---------")
+
+        # Clean the current spot if it's dirty
+        if vacuum.status == 1:
+            vacuum.clean()
+
+        # Move right if the vacuum is on the left and there is a dirty spot on the right
+        elif vacuum.position == 0:
+            vacuum.move_right()
+
+        # Move left if the vacuum is on the right and there is a dirty spot on the left
+        elif vacuum.position == 1:
+            vacuum.move_left()
+
+        # If both spots are clean, the vacuum cleaner stops
+        if vacuum.status == 0 and vacuum.position == 0:
+            print("Both spots are clean. Vacuum cleaner stopped.")
+            break
+
+if __name__ == "__main__":
+    main()

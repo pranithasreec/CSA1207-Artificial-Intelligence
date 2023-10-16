@@ -1,0 +1,39 @@
+from collections import deque
+jug1_capacity = 4
+jug2_capacity = 3
+target_amount = 2
+def water_jug_problem():
+    visited = set()
+    initial_state = (0, 0)
+    queue = deque([(initial_state, [])])
+    while queue:
+        current_state, path = queue.popleft()
+        jug1, jug2 = current_state
+        if jug1 == target_amount or jug2 == target_amount:
+            path.append(current_state)
+            return path
+        visited.add(current_state)
+        actions = [
+            (jug1_capacity, jug2), 
+            (jug1, jug2_capacity),
+            (0, jug2),
+            (jug1, 0),
+            (min(jug1 + jug2, jug1_capacity), max(0, jug1 + jug2 - jug1_capacity)),
+            (max(0, jug1 + jug2 - jug2_capacity), min(jug1 + jug2, jug2_capacity))
+        ]
+        for action in actions:
+            new_state = action
+            if new_state not in visited:
+                new_path = path + [current_state]
+                queue.append((new_state, new_path))
+    return None
+def print_solution(solution):
+    if solution is None:
+        print("No solution found.")
+    else:
+        print("Steps to measure the target amount of water:")
+        for step in solution:
+            print(f"Jug 1: {step[0]} liters, Jug 2: {step[1]} liters")
+if __name__ == "__main__":
+    solution = water_jug_problem()
+    print_solution(solution)

@@ -1,3 +1,4 @@
+
 student(alice, math).
 student(bob, physics).
 student(charlie, chemistry).

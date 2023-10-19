@@ -1,5 +1,9 @@
-takes(prani,ramana,csa0201).
-takes(sree,ramana,csa0201).
-takes(prani,sridhar,ita1114).
-takes(sree,sridhar,ita1114).
-classmates(X,Y):-takes(X,Z),takes(Y,Z).
+student(alice, math).
+student(bob, physics).
+student(charlie, chemistry).
+teacher(mr_smith, math).
+teacher(mr_jones, physics).
+teacher(ms_williams, chemistry).
+sub_code(Student, Teacher, Course) :-
+  student(Student, Course),
+  teacher(Teacher, Course).

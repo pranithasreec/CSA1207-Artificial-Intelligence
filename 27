@@ -1,0 +1,16 @@
+edge(a, b).
+edge(a, c).
+edge(b, d).
+edge(c, d).
+edge(c, e).
+edge(d, e).
+edge(d, f).
+edge(e, f).
+bfs(Start, Goal, Path) :-
+    bfs_queue([[Start]], Goal, RevPath),
+    reverse(RevPath, Path).
+bfs_queue([[Goal | Path] | _], Goal, [Goal | Path]).
+bfs_queue([[Current | Path] | RestPaths], Goal, FinalPath) :-
+    findall([Next, Current | Path], (edge(Current, Next), \+ member(Next, Path)), NewPaths),
+    append(RestPaths, NewPaths, UpdatedQueue),
+    bfs_queue(UpdatedQueue, Goal, FinalPath).

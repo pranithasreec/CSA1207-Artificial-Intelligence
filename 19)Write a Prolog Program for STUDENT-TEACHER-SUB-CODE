@@ -1,5 +1,5 @@
-takes(bhagya, ai2).
-takes(bhagya, art21).
-takes(kiran, ai20).
-takes(kiran, art21).
+takes(prani,ramana,csa0201).
+takes(sree,ramana,csa0201).
+takes(prani,sridhar,ita1114).
+takes(sree,sridhar,ita1114).
 classmates(X,Y):-takes(X,Z),takes(Y,Z).

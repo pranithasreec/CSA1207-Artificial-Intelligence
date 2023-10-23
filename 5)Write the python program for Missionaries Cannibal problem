@@ -1,66 +1,92 @@
-class State:
-    def __init__(self, missionaries_left, cannibals_left, boat_left):
-        self.missionaries_left = missionaries_left
-        self.cannibals_left = cannibals_left
-        self.boat_left = boat_left
-    def is_valid_state(self):
-        return (
-            self.missionaries_left >= 0
-            and self.cannibals_left >= 0
-            and (self.missionaries_left >= self.cannibals_left or self.cannibals_left == 0)
-            and (self.boat_left == 0 or self.boat_left == 1 or self.boat_left == 2)
-        )
-    def get_all_possible_actions(self):
-        actions = []
-        if self.boat_left == 0:
-            if self.missionaries_left > 0:
-                actions.append((1, 0))
-            if self.cannibals_left > 0:
-                actions.append((0, 1))
-            if self.missionaries_left > 1:
-                actions.append((2, 0))
-            if self.cannibals_left > 1:
-                actions.append((0, 2))
-        else:
-            if self.missionaries_left < 3:
-                actions.append((-1, 0))
-            if self.cannibals_left < 3:
-                actions.append((-1, 1))
-            if self.missionaries_left > 0:
-                actions.append((-2, 0))
-            if self.cannibals_left > 0:
-                actions.append((-2, 1))
-        return actions
-    def apply_action(self, action):
-        new_state = State(
-            self.missionaries_left + action[0],
-            self.cannibals_left + action[1],
-            self.boat_left ^ 1,
-        )
-        return new_state
-    def is_goal_state(self):
-        return self.missionaries_left == 0 and self.cannibals_left == 0
-def solve_missionaries_and_cannibals_problem(initial_state):
-    queue = []
-    visited = set()
-    queue.append(initial_state)
-    while queue:
-        current_state = queue.pop(0)
-        if current_state.is_goal_state():
-            return current_state
-        visited.add(current_state)
-        for action in current_state.get_all_possible_actions():
-            new_state = current_state.apply_action(action)
-            if new_state.is_valid_state() and new_state not in visited:
-                queue.append(new_state)
-    return None
-def main():
-    initial_state = State(3, 3, 0)
-    final_state = solve_missionaries_and_cannibals_problem(initial_state)
-    if final_state is None:
-        print("No solution found.")
-    else:
-        print("Solution:")
-        print(final_state)
-if __name__ == "__main__":
-    main()
+print("\n")
+print("\tGame Start\nNow the task is to move all of them to right side of the river")
+print("rules:\n1. The boat can carry at most two people\n2. If cannibals num greater than missionaries then the cannibals would eat the missionaries\n3. The boat cannot cross the river by itself with no people on board")
+lM = 3
+lC = 3		 
+rM=0		 
+rC=0		 
+userM = 0	
+userC = 0	 
+k = 0
+print("\nM M M C C C |	 --- | \n")
+try:
+	while(True):
+		while(True):
+			print("Left side -> right side river travel")
+
+			uM = int(input("Enter number of Missionaries travel => "))	
+			uC = int(input("Enter number of Cannibals travel => "))
+
+			if((uM==0)and(uC==0)):
+				print("Empty travel not possible")
+				print("Re-enter : ")
+			elif(((uM+uC) <= 2)and((lM-uM)>=0)and((lC-uC)>=0)):
+				break
+			else:
+				print("Wrong input re-enter : ")
+		lM = (lM-uM)
+		lC = (lC-uC)
+		rM += uM
+		rC += uC
+
+		print("\n")
+		for i in range(0,lM):
+			print("M ",end="")
+		for i in range(0,lC):
+			print("C ",end="")
+		print("| --> | ",end="")
+		for i in range(0,rM):
+			print("M ",end="")
+		for i in range(0,rC):
+			print("C ",end="")
+		print("\n")
+
+		k +=1
+
+		if(((lC==3)and (lM == 1))or((lC==3)and(lM==2))or((lC==2)and(lM==1))or((rC==3)and (rM == 1))or((rC==3)and(rM==2))or((rC==2)and(rM==1))):
+			print("Cannibals eat missionaries:\nYou lost the game")
+
+			break
+
+		if((rM+rC) == 6):
+			print("You won the game : \n\tCongrats")
+			print("Total attempt")
+			print(k)
+			break
+		while(True):
+			print("Right side -> Left side river travel")
+			userM = int(input("Enter number of Missionaries travel => "))
+			userC = int(input("Enter number of Cannibals travel => "))
+
+			if((userM==0)and(userC==0)):
+					print("Empty travel not possible")
+					print("Re-enter : ")
+			elif(((userM+userC) <= 2)and((rM-userM)>=0)and((rC-userC)>=0)):
+				break
+			else:
+				print("Wrong input re-enter : ")
+		lM += userM
+		lC += userC
+		rM -= userM
+		rC -= userC
+
+		k +=1
+		print("\n")
+		for i in range(0,lM):
+			print("M ",end="")
+		for i in range(0,lC):
+			print("C ",end="")
+		print("| <-- | ",end="")
+		for i in range(0,rM):
+			print("M ",end="")
+		for i in range(0,rC):
+			print("C ",end="")
+		print("\n")
+
+
+
+		if(((lC==3)and (lM == 1))or((lC==3)and(lM==2))or((lC==2)and(lM==1))or((rC==3)and (rM == 1))or((rC==3)and(rM==2))or((rC==2)and(rM==1))):
+			print("Cannibals eat missionaries:\nYou lost the game")
+			break
+except EOFError as e:
+	print("\nInvalid input please retry !!")
